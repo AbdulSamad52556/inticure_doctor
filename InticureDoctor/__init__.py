@@ -410,9 +410,14 @@ def login():
             #     "login_flag":"doctor"
             # }
             print(username)
-            data={
-                "email":username
-            }
+            if '@' in username:
+                data={
+                    "email":username
+                }
+            else:
+                data={
+                    "mobile_num":username
+                }
             api_data=json.dumps(data)
             print(api_data)
             # admin_login_response=requests.post(base_url+admin_login_api,data=api_data,headers=headers)
@@ -420,6 +425,8 @@ def login():
             print("login",admin_login_response.status_code)
             admin_login=json.loads(admin_login_response.text)
             print(admin_login)
+            if 'email' in admin_login:
+                session['username'] = admin_login['email']
             if admin_login['response_code']==200:
                 return redirect(url_for('email_otp'))
             else:
