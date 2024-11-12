@@ -778,139 +778,7 @@ def add_doctor():
         if request.method == 'POST':
             print("post")
             
-            # if request.form['form_type'] == "upload_address_proof":
-            #     print("upload address")
-            #     file_headers={
-            #         'files' : 'multipart/form-data'
-            #     }
-            #     address_file = request.files["address_proof_file"]
-            #     sourceFileName = secure_filename(address_file.filename)
-            #     print(sourceFileName)
-            #     cwd = os.getcwd()+'/'
-            #     print(cwd)
-            #     if 'temp' not in os.listdir(cwd):
-            #         os.mkdir(cwd + 'temp')
-            #     address_file.save(os.path.join(cwd + 'temp', sourceFileName))
-
-            #     with open(cwd + 'temp/'+ sourceFileName, 'rb') as f:
-            #         # data_file = {
-            #         #     "common_file":(sourceFileName, 'rb')
-            #         # }
-            #         data_file = {
-            #             "common_file":(sourceFileName, f)
-            #         }
-            #         print(data_file)
-            #         file_uploader_api=base_url+file_upload_api
-            #         file_upload_submit = requests.post(file_uploader_api,files=data_file,)
-            #         print(file_upload_submit.status_code)                    
-            #         file_upload_response=json.loads(file_upload_submit.text)
-            #         print(file_upload_response)
-            #         print(file_upload_submit.status_code)
-            #         address_file_path=file_upload_response['common_file']
-            #         print(address_file_path)
-            #         if file_upload_response['common_file']:
-            #             flash(f"{sourceFileName} uploaded","success")
-            #         else:
-            #             flash("Something went wrong","error")
-                    
-
-            # if request.form['form_type'] == "upload_certificate":
-            #     print("upload certificate")
-                
-            #     certificate_file = request.files["certificate_file"]
-            #     sourceFileName = secure_filename(certificate_file.filename)
-            #     print(sourceFileName)
-            #     cwd = os.getcwd()+'/'
-            #     print(cwd)
-            #     if 'temp' not in os.listdir(cwd):
-            #         os.mkdir(cwd + 'temp')
-            #     certificate_file.save(os.path.join(cwd + 'temp', sourceFileName))
-
-            #     with open(cwd + 'temp/'+ sourceFileName, 'rb') as f:
-            #         # data_file = {
-            #         #     "common_file":(sourceFileName, 'rb')
-            #         # }
-            #         data_file = {
-            #             "common_file":(sourceFileName, f)
-            #         }
-            #         print(data_file)
-            #         file_uploader_api=base_url+file_upload_api
-            #         file_upload_submit = requests.post(file_uploader_api,files=data_file,)
-            #         print(file_upload_submit.status_code)                    
-            #         file_upload_response=json.loads(file_upload_submit.text)
-            #         print(file_upload_response)
-            #         print(file_upload_submit.status_code)
-            #         certificate_file_path=file_upload_response['common_file']
-            #         if file_upload_response['common_file']:
-            #             flash(f"{sourceFileName} uploaded","success")
-            #         else:
-            #             flash("Something went wrong","error")
-                    
-
-            # if request.form['form_type'] == "upload_photo":
-            #     print("upload photo")
-                
-            #     photo_file = request.files["photo_file"]
-            #     sourceFileName = secure_filename(photo_file.filename)
-            #     print(sourceFileName)
-            #     cwd = os.getcwd()+'/'
-            #     print(cwd)
-            #     if 'temp' not in os.listdir(cwd):
-            #         os.mkdir(cwd + 'temp')
-            #     photo_file.save(os.path.join(cwd + 'temp', sourceFileName))
-
-            #     with open(cwd + 'temp/'+ sourceFileName, 'rb') as f:
-            #         # data_file = {
-            #         #     "common_file":(sourceFileName, 'rb')
-            #         # }
-            #         data_file = {
-            #             "common_file":(sourceFileName, f)
-            #         }
-            #         print(data_file)
-            #         file_uploader_api=base_url+file_upload_api
-            #         file_upload_submit = requests.post(file_uploader_api,files=data_file,)
-            #         print(file_upload_submit.status_code)                    
-            #         file_upload_response=json.loads(file_upload_submit.text)
-            #         print(file_upload_response)
-            #         print(file_upload_submit.status_code)
-            #         photo_file_path=file_upload_response['common_file']
-            #         if file_upload_response['common_file']:
-            #             flash(f"{sourceFileName} uploaded","success")
-            #         else:
-            #             flash("Something went wrong","error")
-
-            # if request.form['form_type'] == "upload_signature":
-            #     print("upload signature")
-                
-            #     signature_file = request.files["signature_file"]
-            #     sourceFileName = secure_filename(signature_file.filename)
-            #     print(sourceFileName)
-            #     cwd = os.getcwd()+'/'
-            #     print(cwd)
-            #     if 'temp' not in os.listdir(cwd):
-            #         os.mkdir(cwd + 'temp')
-            #     signature_file.save(os.path.join(cwd + 'temp', sourceFileName))
-
-            #     with open(cwd + 'temp/'+ sourceFileName, 'rb') as f:
-            #         # data_file = {
-            #         #     "common_file":(sourceFileName, 'rb')
-            #         # }
-            #         data_file = {
-            #             "common_file":(sourceFileName, f)
-            #         }
-            #         print(data_file)
-            #         file_uploader_api=base_url+file_upload_api
-            #         file_upload_submit = requests.post(file_uploader_api,files=data_file,)
-            #         print(file_upload_submit.status_code)                    
-            #         file_upload_response=json.loads(file_upload_submit.text)
-            #         print(file_upload_response)
-            #         print(file_upload_submit.status_code)
-            #         signature_file_path=file_upload_response['common_file']
-            #         if file_upload_response['common_file']:
-            #             flash(f"{sourceFileName} uploaded","success")
-            #         else:
-            #             flash("Something went wrong","error")
-                    
+           
 
             if request.form['form_type'] == "add_doctor":
                 print("add doctor")
@@ -921,72 +789,49 @@ def add_doctor():
                 address_file = request.files["address_proof_file"]
                 addressFileName = secure_filename(address_file.filename)
                 print(addressFileName)
-                # cwd = os.getcwd()+'/'
-                # print(cwd)
-                # if 'temp' not in os.listdir(cwd):
-                #     os.mkdir(cwd + 'temp')
-                # address_file.save(os.path.join(cwd + 'temp', addressFileName))
+                if addressFileName:
+                    print("BASE_DIR : ",BASE_DIR)
+                    if 'temp' not in os.listdir(BASE_DIR):
+                        os.mkdir(str(BASE_DIR) + '/' + 'temp')
+                    address_file.save(os.path.join(str(BASE_DIR) +'/' + 'temp', addressFileName))
 
-                # with open(cwd + 'temp/'+ addressFileName, 'rb') as f:
-                #     # data_file = {
-                #     #     "common_file":(addressFileName, 'rb')
-                #     # }
-                #     data_file = {
-                #         "common_file":(addressFileName, f)
-                #     }
-                print("BASE_DIR : ",BASE_DIR)
-                if 'temp' not in os.listdir(BASE_DIR):
-                    os.mkdir(str(BASE_DIR) + '/' + 'temp')
-                address_file.save(os.path.join(str(BASE_DIR) +'/' + 'temp', addressFileName))
+                    file_stats = os.stat(str(BASE_DIR) + '/' + 'temp/'+ addressFileName)
+                    # print(file_stats)
+                    address_file_size=f'{round(file_stats.st_size / (1024 * 1024),2)} MB'
+                    print(address_file_size)    
+                    print(f'{file_stats.st_size / (1024)} KB')
+                    print(f'{file_stats.st_size / (1024 * 1024)} MB')
 
-                file_stats = os.stat(str(BASE_DIR) + '/' + 'temp/'+ addressFileName)
-                # print(file_stats)
-                address_file_size=f'{round(file_stats.st_size / (1024 * 1024),2)} MB'
-                print(address_file_size)    
-                print(f'{file_stats.st_size / (1024)} KB')
-                print(f'{file_stats.st_size / (1024 * 1024)} MB')
-
-                with open(str(BASE_DIR) + '/' + 'temp/'+ addressFileName, 'rb') as f:
-                    # data_file = {
-                    #     "common_file":(addressFileName, 'rb')
-                    # }
-                    data_file = {
-                        "common_file":(addressFileName, f)
-                    }
-                    print(data_file)
-                    file_uploader_api=base_url+file_upload_api
-                    file_upload_submit = requests.post(file_uploader_api,files=data_file,)
-                    print(file_upload_submit.status_code)                    
-                    file_upload_response=json.loads(file_upload_submit.text)
-                    print(file_upload_response)
-                    print(file_upload_submit.status_code)
-                    address_file_path=file_upload_response['common_file']
-                    print(address_file_path)
-                    if file_upload_response['common_file']:
-                        flash(f"{addressFileName} uploaded","success")
-                        # delete the photo file from the temporary directory
-                        # os.remove(os.path.join(str(BASE_DIR) +"/" + 'temp', addressFileName))
-                    else:
-                        flash("Something went wrong","error")
+                    with open(str(BASE_DIR) + '/' + 'temp/'+ addressFileName, 'rb') as f:
+                    
+                        data_file = {
+                            "common_file":(addressFileName, f)
+                        }
+                        print(data_file)
+                        file_uploader_api=base_url+file_upload_api
+                        file_upload_submit = requests.post(file_uploader_api,files=data_file,)
+                        print(file_upload_submit.status_code)                    
+                        file_upload_response=json.loads(file_upload_submit.text)
+                        print(file_upload_response)
+                        print(file_upload_submit.status_code)
+                        address_file_path=file_upload_response['common_file']
+                        print(address_file_path)
+                        if file_upload_response['common_file']:
+                            flash(f"{addressFileName} uploaded","success")
+                            # delete the photo file from the temporary directory
+                            # os.remove(os.path.join(str(BASE_DIR) +"/" + 'temp', addressFileName))
+                        else:
+                            flash("Address file is unable to upload","error")
+                else:
+                    addressFileName = ""
+                    address_file_size = ""
+                    address_file_path = ""
 
                 # """ CERTIFICATE FILE UPLOAD"""
                 certificate_file = request.files["certificate_file"]
                 certificateFileName = secure_filename(certificate_file.filename)
                 print(certificateFileName)
-                # cwd = os.getcwd()+'/'
-                # print(cwd)
-                # if 'temp' not in os.listdir(cwd):
-                #     os.mkdir(cwd + 'temp')
-                # certificate_file.save(os.path.join(cwd + 'temp', certificateFileName))
-
-                # with open(cwd + 'temp/'+ certificateFileName, 'rb') as f:
-                #     # data_file = {
-                #     #     "common_file":(certificateFileName, 'rb')
-                #     # }
-                #     data_file = {
-                #         "common_file":(certificateFileName, f)
-                #     }
-
+                
                 print("BASE_DIR : ",BASE_DIR)
                 if 'temp' not in os.listdir(BASE_DIR):
                     os.mkdir(str(BASE_DIR) + '/' + 'temp')
@@ -1019,7 +864,7 @@ def add_doctor():
                         # delete the photo file from the temporary directory
                         # os.remove(os.path.join(str(BASE_DIR) +'/' + 'temp', certificateFileName))
                     else:
-                        flash("Something went wrong","error")
+                        flash("Certificate is unable to upload","error")
 
                 # """ PHOTO UPLOAD """
                 photo_file = request.files["photo_file"]
@@ -1071,60 +916,51 @@ def add_doctor():
                         # delete the photo file from the temporary directory
                         # os.remove(os.path.join(str(BASE_DIR) +'/' + 'temp', photoFileName))
                     else:
-                        flash("Something went wrong","error")
+                        flash("Profile photo is unable to upload","error")
 
                 # """" SIGNATURE FILE UPLOAD """"
                 signature_file = request.files["signature_file"]
                 signatureFileName = secure_filename(signature_file.filename)
                 print(signatureFileName)
-                # cwd = os.getcwd()+'/'
-                # print(cwd)
-                # if 'temp' not in os.listdir(cwd):
-                #     os.mkdir(cwd + 'temp')
-                # signature_file.save(os.path.join(cwd + 'temp', signatureFileName))
+                
+                if signatureFileName:
+                    print("BASE_DIR : ",BASE_DIR)
+                    if 'temp' not in os.listdir(BASE_DIR):
+                        os.mkdir(str(BASE_DIR) + '/' + 'temp')
+                    signature_file.save(os.path.join(str(BASE_DIR) +'/' + 'temp', signatureFileName))
 
-                # with open(cwd + 'temp/'+ signatureFileName, 'rb') as f:
-                #     # data_file = {
-                #     #     "common_file":(signatureFileName, 'rb')
-                #     # }
-                #     data_file = {
-                #         "common_file":(signatureFileName, f)
-                #     }
+                    file_stats = os.stat(str(BASE_DIR) + '/' + 'temp/'+ signatureFileName)
+                    # print(file_stats)
+                    signature_file_size=f'{round(file_stats.st_size / (1024 * 1024),2)} MB'
+                    print(signature_file_size)
+                    print(f'{file_stats.st_size / (1024)} KB')
+                    print(f'{file_stats.st_size / (1024 * 1024)} MB')
 
-                print("BASE_DIR : ",BASE_DIR)
-                if 'temp' not in os.listdir(BASE_DIR):
-                    os.mkdir(str(BASE_DIR) + '/' + 'temp')
-                signature_file.save(os.path.join(str(BASE_DIR) +'/' + 'temp', signatureFileName))
-
-                file_stats = os.stat(str(BASE_DIR) + '/' + 'temp/'+ signatureFileName)
-                # print(file_stats)
-                signature_file_size=f'{round(file_stats.st_size / (1024 * 1024),2)} MB'
-                print(signature_file_size)
-                print(f'{file_stats.st_size / (1024)} KB')
-                print(f'{file_stats.st_size / (1024 * 1024)} MB')
-
-                with open(str(BASE_DIR) + '/' + 'temp/'+ signatureFileName, 'rb') as f:
-                    # data_file = {
-                    #     "common_file":(signatureFileName, 'rb')
-                    # }
-                    data_file = {
-                        "common_file":(signatureFileName, f)
-                    }
-                    print(data_file)
-                    file_uploader_api=base_url+file_upload_api
-                    file_upload_submit = requests.post(file_uploader_api,files=data_file,)
-                    print(file_upload_submit.status_code)                    
-                    file_upload_response=json.loads(file_upload_submit.text)
-                    print(file_upload_response)
-                    print(file_upload_submit.status_code)
-                    signature_file_path=file_upload_response['common_file']
-                    if file_upload_response['common_file']:
-                        flash(f"{signatureFileName} uploaded","success")
-                        # delete the photo file from the temporary directory
-                        # os.remove(os.path.join(str(BASE_DIR) +'/' + 'temp', signatureFileName))
-                    else:
-                        flash("Something went wrong","error")        
-
+                    with open(str(BASE_DIR) + '/' + 'temp/'+ signatureFileName, 'rb') as f:
+                        # data_file = {
+                        #     "common_file":(signatureFileName, 'rb')
+                        # }
+                        data_file = {
+                            "common_file":(signatureFileName, f)
+                        }
+                        print(data_file)
+                        file_uploader_api=base_url+file_upload_api
+                        file_upload_submit = requests.post(file_uploader_api,files=data_file,)
+                        print(file_upload_submit.status_code)                    
+                        file_upload_response=json.loads(file_upload_submit.text)
+                        print(file_upload_response)
+                        print(file_upload_submit.status_code)
+                        signature_file_path=file_upload_response['common_file']
+                        if file_upload_response['common_file']:
+                            flash(f"{signatureFileName} uploaded","success")
+                            # delete the photo file from the temporary directory
+                            # os.remove(os.path.join(str(BASE_DIR) +'/' + 'temp', signatureFileName))
+                        else:
+                            flash("signature file is unable to upload","error")        
+                else:
+                    signatureFileName = ""
+                    signature_file_size = ""
+                    signature_file_path = ""
                 # ******* FILE UPLOADS E ********
 
                 first_name=request.form['first_name']
