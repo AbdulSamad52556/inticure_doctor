@@ -429,6 +429,9 @@ def login():
                 session['username'] = admin_login['email']
             if admin_login['response_code']==200:
                 return redirect(url_for('email_otp'))
+            if admin_login['message'] == "User Banned":
+                flash("User is not allowed to login, Contact our team to continue the journey with us.","warning")
+                return redirect(url_for('login'))
             else:
                 flash("Invalid email","error")
                 return redirect(url_for('login'))
@@ -1590,7 +1593,18 @@ def doctor_profile():
 
 @app.route("/dashboard/")
 def dashboard():
+    print(session)
     try:
+        headers = {
+            "Content-Type":"application/json"
+        }
+        if 'username' in session:
+            check_user = requests.post(base_url+'/api/doctor/is_dr_blocked/', data=json.dumps({'email':session['username']}), headers=headers)
+            res_check_user = json.loads(check_user.text)
+            print('res_check_user',res_check_user)
+            if res_check_user['status'] == 'blocked':
+                session.clear()
+                return redirect(url_for('login'))
         if 'user_id' in session:
             doctor_id=session['user_id']
             print(doctor_id)
@@ -1599,10 +1613,7 @@ def dashboard():
         if 'doctor_flag' in session:
             doctor_flag=session['doctor_flag']
             print(doctor_flag)
-        headers = {
-            "Content-Type":"application/json"
-        }
-        #dashboard api call
+        
         dash_payload={
             "doctor_id":doctor_id,
             "doctor_flag":doctor_flag
@@ -1725,6 +1736,16 @@ def appointment_listing(api_data):
 @app.route("/doctor_dash", methods=['GET','POST'])
 def doctor_dash():
     print(session)
+    headers = {
+        "Content-Type":"application/json"
+    }  
+    if 'username' in session:
+        check_user = requests.post(base_url+'/api/doctor/is_dr_blocked/', data=json.dumps({'email':session['username']}), headers=headers)
+        res_check_user = json.loads(check_user.text)
+        print('res_check_user',res_check_user)
+        if res_check_user['status'] == 'blocked':
+            session.clear()
+            return redirect(url_for('login'))
     appointment_list_api="api/doctor/appointment_list"
     if 'user_id' in session:
         doctor_id=session['user_id']
@@ -1735,9 +1756,6 @@ def doctor_dash():
         doctor_flag=session['doctor_flag']
         print(doctor_flag)
    
-    headers = {
-        "Content-Type":"application/json"
-    }  
 
     if doctor_flag == 2: 
    
@@ -3025,6 +3043,16 @@ from datetime import datetime, timedelta
 @app.route("/calendar",methods=['POST','GET'])
 def calendar():
     try:
+        headers = {
+            "Content-Type":"application/json"
+        }  
+        if 'username' in session:
+            check_user = requests.post(base_url+'/api/doctor/is_dr_blocked/', data=json.dumps({'email':session['username']}), headers=headers)
+            res_check_user = json.loads(check_user.text)
+            print('res_check_user',res_check_user)
+            if res_check_user['status'] == 'blocked':
+                session.clear()
+                return redirect(url_for('login'))
         if 'user_id' in session:
             doctor_id=session['user_id']
             print(doctor_id)
