@@ -386,6 +386,21 @@ def phone_otp():
         
     return render_template("sign_in_otp.html")
 
+@app.route("/login_from_admin",methods=['GET','POST'])
+def login_from_admin():
+    headers = {
+        "Content-Type":"application/json"
+    }
+    doctor_email = request.args.get('doctor_email')
+    print(doctor_email)
+    login_from_admin_request = requests.post('https://api.inticure.online/api/doctor/login_from_admin/',data=json.dumps({"doctor_email":doctor_email}),headers=headers)
+    login_from_admin_response = json.loads(login_from_admin_request.text)
+    print(login_from_admin_response)
+    if login_from_admin_response['response_code'] == 400:
+        return redirect(request.referrer)
+    session['username'] = doctor_email
+    return redirect(url_for('email_otp'))
+
 @app.route("/email_login",methods=['GET','POST'])
 def login():
     try:
@@ -479,8 +494,6 @@ def email_otp():
                 payload={
                         "doctor_id":user_id
                     }
-                    
-                    
                 api_data=json.dumps(payload)
                 doctor_profile_request=requests.post(base_url+doctor_profile_api, data=api_data, headers=headers)
                 doctor_profile_response=json.loads(doctor_profile_request.text)
@@ -522,7 +535,6 @@ def email_otp():
                         "doctor_id":user_id
                     }
                     
-                    
                 api_data=json.dumps(payload)
                 doctor_profile_request=requests.post(base_url+doctor_profile_api, data=api_data, headers=headers)
                 doctor_profile_response=json.loads(doctor_profile_request.text)
@@ -547,12 +559,7 @@ def email_otp():
                 otp = request.form.get('otp')
                 if 'username' in session:
                     username=session['username']
-                # password = request.form.get('password')
-                # data={
-                #     "username":username,
-                #     "password":password,
-                #     "login_flag":"doctor"
-                # }
+                
                 print(username)
                 data={
                     "email":username,
@@ -560,40 +567,25 @@ def email_otp():
                 }
                 api_data=json.dumps(data)
                 print(api_data)
-                # admin_login_response=requests.post(base_url+admin_login_api,data=api_data,headers=headers)
                 admin_login_response=requests.post(base_url+sign_in_otp_api, data=api_data, headers=headers)
 
                 print("login",admin_login_response.status_code)
                 admin_login=json.loads(admin_login_response.text)
                 print(admin_login)
                 if admin_login_response.status_code == 200:
-                    #storing doctor flag key from login response in doctor flag variable
                     doctor_flag=admin_login['doctor_flag']
-                    #storing doctor flag variable as doctor flag key in session
                     session['doctor_flag']=doctor_flag
                     print("doc",doctor_flag)
-                    # if doctor_flag == 0:
 
-                    #storing user id in session 
                     user_id=admin_login['user_id']
                     session['user_id']=user_id
                     print("user id",user_id)
 
-                    # gender=admin_login['gender']
-                    # session['gender']=gender
-                    # print("gender",gender)
-
-                    # languages_known=admin_login['languages_known']
-                    # session['languages_known']=languages_known
-                    # print("languages_known",languages_known)
-
-                # if admin_login_response.status_code == 200:
                     print("200")
                     
                     payload={
                         "doctor_id":user_id
                     }
-                    
                     
                     api_data=json.dumps(payload)
                     doctor_profile_request=requests.post(base_url+doctor_profile_api, data=api_data, headers=headers)
@@ -613,25 +605,10 @@ def email_otp():
                     signature=doctor_profile2['signature']
                     session['signature'] = signature
 
-                    # doctor_listing=requests.post(base_url+doctor_listing_api, headers=headers)
-                    # doctor_list_response=json.loads(doctor_listing.text)
-                    # print(doctor_listing.status_code)
-                    # doctor_list = doctor_list_response['data']
-                    # for doctor in doctor_list:
-                    #     if doctor['user_id'] == user_id:
-                    #         doctor_first_name = doctor['user_fname']
-                    #         session['doctor_first_name'] = doctor_first_name
-                    #         doctor_last_name = doctor['user_lname']
-                    #         session['doctor_last_name'] = doctor_last_name
-                    #         doctor_email = doctor['user_mail']
-                    #         session['doctor_email'] = doctor_email
-                    #         print(doctor_first_name,doctor_last_name,doctor_email)
-
                     return redirect(url_for("dashboard"))
                 else:
                     flash("Invalid Email/OTP","error")
                     return redirect(url_for('email_otp'))
-                    # return redirect(url_for("login"))
 
                 #Resend otp 
             elif request.form['form_type']=="resend":
