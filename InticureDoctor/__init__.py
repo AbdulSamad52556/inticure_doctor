@@ -1934,12 +1934,14 @@ def order_detail(id):
 
         if 'user_id' in session:
             doctor_id=session['user_id']
+            session.permanent = True
             # print("doc id",doctor_id)
         else:
             return redirect(url_for('login'))
         
         if 'doctor_flag' in session:
             doctor_flag=session['doctor_flag']
+            session.permanent = True
             # print("doc flag",doctor_flag)
 
         headers={
