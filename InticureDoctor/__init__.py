@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import redirect,url_for,render_template, request, flash,session,jsonify,send_file,send_from_directory
 import json, requests
-from datetime import datetime,date
+from datetime import datetime,date, timedelta
 from werkzeug.utils import secure_filename
 import os
 from urllib.parse import urlparse
@@ -14,6 +14,7 @@ app.config["SECRET_KEY"]='3e15976f74727374875a04f995324cc214fa3723ded4d9fee5ab6d
 "doctor app url: doctors.inticure.com"
 
 base_url = "https://api.inticure.online/"
+app.permanent_session_lifetime = timedelta(days=90)
 
 # api urls
 admin_login_api="api/administrator/sign_in"
@@ -198,6 +199,7 @@ def phone_otp():
             }
         if 'mobile_num' in session:
             mobile_num=session['mobile_num']
+
             
 
         if request.method == 'POST':
@@ -241,6 +243,7 @@ def phone_otp():
                 session['profile_pic'] = profile_pic
                 signature=doctor_profile2['signature']
                 session['signature'] = signature
+                session.permanent = True
                 return redirect(url_for("dashboard"))
 
             # "" Dr Srikesh Lal""
@@ -1800,7 +1803,7 @@ def doctor_dash():
     #active
     # escalated(2) and rescheduled(7) and senior_transfered(11) and new paid appointment(12) and followup(8) appointments
         payload7={
-            "appointment_status" : [1,2,7,11,12,8],
+            "appointment_status" : [1,2,7,11,12],
             "user_id":doctor_id,
             "doctor_flag":doctor_flag,
             # "gender": gender,
@@ -2309,7 +2312,8 @@ def order_detail(id):
                         "side_effects":request.form[f'side_effects{count}'],
                         "consumption_detail":request.form[f'when_{count}'],
                         "consumption_time":request.form.getlist(f'medicine_time_{count}'),
-                        "can_substitute":can_substitute
+                        "can_substitute":can_substitute,
+                    
                         # "is_substitute":request.form.get(f'can_substitute_{count}')
                     }
                     medication_list.append(medication_dict)
@@ -2322,6 +2326,7 @@ def order_detail(id):
                     "doctor_id":doctor_id,
                     "tests_to_be_done":tests,
                     "medications":medication_list,
+                    "prescription_validation":request.form['prescription_validation']
                 }
                 json_data=json.dumps(data)
                 # print("prescription request :", json_data)
@@ -2516,7 +2521,7 @@ def order_detail(id):
                             "doctor_id":doctor_id,
                             "doctor_flag":doctor_flag,
                             "remarks":remarks,
-                            "appointment_status":8,
+                            "appointment_status":2,
                             "followup_created_by":"doctor",
                             "followup_created_doctor_id":doctor_id,
                             "followup_doctor":followup_doctor,
