@@ -76,7 +76,7 @@ sign_in_otp_api="api/administrator/sign_in_otp"
 reschedule_api="api/doctor/appointment_schedule"
 patient_history_api="/api/doctor/appointment_patient_history"
 locations_api="api/administrator/locations_viewset"
-complete_api="api/doctor/appointment_completed"
+complete_api="api/doctor/   d"
 
 
 # """"""" BASE DIRECTORY """"""""
