@@ -415,6 +415,7 @@ def login():
             print("post")
             username = request.form.get('username')
             session['username']=username
+            session.permanent = True
             if username == "kiran@inticure.com":
                 print("kiran doc")
                 return redirect(url_for('email_otp'))
@@ -448,10 +449,12 @@ def login():
             if admin_login['response_code']==200:
                 return redirect(url_for('email_otp'))
             if admin_login['message'] == "User Banned":
+                session.clear()
                 flash("User is not allowed to login, Contact our team to continue the journey with us.","warning")
                 return redirect(url_for('login'))
             else:
                 flash("Invalid email","error")
+                session.clear()
                 return redirect(url_for('login'))
             # return redirect(url_for('email_otp'))
         return render_template("login.html")
@@ -1934,7 +1937,6 @@ def order_detail(id):
 
         if 'user_id' in session:
             doctor_id=session['user_id']
-            session.permanent = True
             # print("doc id",doctor_id)
         else:
             return redirect(url_for('login'))
@@ -2278,63 +2280,77 @@ def order_detail(id):
                 #     "prescriptions_text":prescription,
                 #     "doctor_id":doctor_id
                 # }
-                remarks=request.form['prescription_remarks']
-                tests=request.form['tests']
-                counts=request.form['count']
-                # print("counts",counts)
-                medication_list=[]
-                medication_dict={}
-                # can_substitute=request.form.get('can_substitute_1')
-                # print("sub",can_substitute)
-                
-                # * here dynamic elements value is fetched by for loop *
-                # * count is the number of prescription rows added in the pop up *
-                for count in range(1,int(counts)+1):
-                    # print("count",count)
-                    # print(f'medicine{count}')                
-                    # medication_dict['medicine']=request.form[f'medicine{count}']            
-                    # medication_dict['duration_number']=request.form[f'number{count}']           
-                    # print(medicine)
-                    # print(duration_number)
-                    can_sub_checkbox=request.form.get(f'can_substitute_{count}')
-                    # print(can_sub_checkbox)
+                try:
+                    remarks=request.form['prescription_remarks']
+                    tests=request.form['tests']
+                    counts=request.form['count']
+                    # print("counts",counts)
+                    medication_list=[]
+                    medication_dict={}
+                    print(request.form['prescription_remarks'])
+                    # can_substitute=request.form.get('can_substitute_1')
+                    # print("sub",can_substitute)
                     
-                    if can_sub_checkbox=='1':
-                        # medication_dict['can_substitute'] = 1
-                        can_substitute = 1
-                    else:
-                        can_substitute = 0
-                    # print("can sub",can_substitute)
-                        # medication_dict['can_substitute'] = 0
-                    # print("d",medication_dict['can_substitute'])
-                    medication_dict={
-                        "medicine":request.form[f'medicine{count}'] ,
-                        "duration_number":request.form[f'number{count}'],
-                        "duration":request.form[f'dosage_duration{count}'],
-                        "side_effects":request.form[f'side_effects{count}'],
-                        "consumption_detail":request.form[f'when_{count}'],
-                        "consumption_time":request.form.getlist(f'medicine_time_{count}'),
-                        "can_substitute":can_substitute,
-                    
-                        # "is_substitute":request.form.get(f'can_substitute_{count}')
+                    # * here dynamic elements value is fetched by for loop *
+                    # * count is the number of prescription rows added in the pop up *
+                    print(counts)
+                    for count in range(1,int(counts)+1):
+                        print("count",count)
+                        print(f'medicine{count}')                
+                        # medication_dict['medicine']=request.form[f'medicine{count}']            
+                        # medication_dict['duration_number']=request.form[f'number{count}']           
+                        # print(medicine)
+                        # print(duration_number)
+                        can_sub_checkbox=request.form.get(f'can_substitute_{count}')
+                        print(can_sub_checkbox)
+                        
+                        if can_sub_checkbox=='1':
+                            # medication_dict['can_substitute'] = 1
+                            can_substitute = 1
+                        else:
+                            can_substitute = 0
+                        print("can sub",can_substitute)
+                            # medication_dict['can_substitute'] = 0
+                        try:
+                            print("d",medication_dict['can_substitute'])
+                        except Exception as e:
+                            print(e)
+                        try:
+                            medication_dict={
+                                "medicine":request.form[f'medicine{count}'] ,
+                                "duration_number":request.form[f'number{count}'],
+                                "duration":request.form[f'dosage_duration{count}'],
+                                "side_effects":request.form[f'side_effects{count}'],
+                                "consumption_detail":request.form[f'when_{count}'],
+                                "consumption_time":request.form.getlist(f'medicine_time_{count}'),
+                                "can_substitute":can_substitute,
+                            
+                                # "is_substitute":request.form.get(f'can_substitute_{count}')
+                            }
+                            medication_list.append(medication_dict)
+                        except Exception as e:
+                            print(e)
+                        print(medication_list)
+                    print("medication list",medication_list)
+                    print(counts)
+                    data={
+                        "appointment_id":id,
+                        "prescriptions_text":remarks,
+                        "doctor_id":doctor_id,
+                        "tests_to_be_done":tests,
+                        "medications":medication_list,
+                        "prescription_validation":request.form['prescription_validation']
                     }
-                    medication_list.append(medication_dict)
-                    # print(medication_list)
-                # print("medication list",medication_list)
-                # print(counts)
-                data={
-                    "appointment_id":id,
-                    "prescriptions_text":remarks,
-                    "doctor_id":doctor_id,
-                    "tests_to_be_done":tests,
-                    "medications":medication_list,
-                    "prescription_validation":request.form['prescription_validation']
-                }
-                json_data=json.dumps(data)
-                # print("prescription request :", json_data)
-                prescription_text_submit=requests.post(base_url+prescription_text_api, data=json_data, headers=headers)
-                prescription_text_submit_response=json.loads(prescription_text_submit.text)
-                # print(prescription_text_submit_response)
+                    json_data=json.dumps(data)
+                    print("prescription request :", json_data)
+                    try:
+                        prescription_text_submit=requests.post(base_url+prescription_text_api, data=json_data, headers=headers)
+                        prescription_text_submit_response=json.loads(prescription_text_submit.text)
+                        print(prescription_text_submit_response)
+                    except Exception as e:
+                        print(e)
+                except Exception as e:
+                    print(e)
                 # print(prescription_text_submit.status_code)
 
             if request.form['form_type'] == 'edit_prescription':
