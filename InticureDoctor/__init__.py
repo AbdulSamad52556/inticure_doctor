@@ -434,6 +434,8 @@ def login():
                     "email":username
                 }
             else:
+                country_code = request.form.get('country-code')
+                print(country_code)
                 data={
                     "mobile_num":username
                 }
@@ -855,54 +857,59 @@ def add_doctor():
                 # """ PHOTO UPLOAD """
                 photo_file = request.files["photo_file"]
                 photoFileName = secure_filename(photo_file.filename)
-                print(photoFileName)
-                # cwd = os.getcwd()+'/'
-                # print(cwd)
-                # if 'temp' not in os.listdir(cwd):
-                #     os.mkdir(cwd + 'temp')
-                # photo_file.save(os.path.join(cwd + 'temp', photoFileName))
+                if photoFileName:
+                    print(photoFileName)
+                    # cwd = os.getcwd()+'/'
+                    # print(cwd)
+                    # if 'temp' not in os.listdir(cwd):
+                    #     os.mkdir(cwd + 'temp')
+                    # photo_file.save(os.path.join(cwd + 'temp', photoFileName))
 
-                # with open(cwd + 'temp/'+ photoFileName, 'rb') as f:
-                #     # data_file = {
-                #     #     "common_file":(photoFileName, 'rb')
-                #     # }
-                #     data_file = {
-                #         "common_file":(photoFileName, f)
-                #     }
+                    # with open(cwd + 'temp/'+ photoFileName, 'rb') as f:
+                    #     # data_file = {
+                    #     #     "common_file":(photoFileName, 'rb')
+                    #     # }
+                    #     data_file = {
+                    #         "common_file":(photoFileName, f)
+                    #     }
 
-                print("BASE_DIR : ",BASE_DIR)
-                if 'temp' not in os.listdir(BASE_DIR):
-                    os.mkdir(str(BASE_DIR) + '/' + 'temp')
-                photo_file.save(os.path.join(str(BASE_DIR) +'/' + 'temp', photoFileName))
+                    print("BASE_DIR : ",BASE_DIR)
+                    if 'temp' not in os.listdir(BASE_DIR):
+                        os.mkdir(str(BASE_DIR) + '/' + 'temp')
+                    photo_file.save(os.path.join(str(BASE_DIR) +'/' + 'temp', photoFileName))
 
-                file_stats = os.stat(str(BASE_DIR) + '/' + 'temp/'+ photoFileName)
-                # print(file_stats)
-                photo_file_size=f'{round(file_stats.st_size / (1024 * 1024),2)} MB'
-                print(photo_file_size)
-                print(f'{file_stats.st_size / (1024)} KB')
-                print(f'{file_stats.st_size / (1024 * 1024)} MB')
+                    file_stats = os.stat(str(BASE_DIR) + '/' + 'temp/'+ photoFileName)
+                    # print(file_stats)
+                    photo_file_size=f'{round(file_stats.st_size / (1024 * 1024),2)} MB'
+                    print(photo_file_size)
+                    print(f'{file_stats.st_size / (1024)} KB')
+                    print(f'{file_stats.st_size / (1024 * 1024)} MB')
 
-                with open(str(BASE_DIR) + '/' + 'temp/'+ photoFileName, 'rb') as f:
-                    # data_file = {
-                    #     "common_file":(photoFileName, 'rb')
-                    # }
-                    data_file = {
-                        "common_file":(photoFileName, f)
-                    }
-                    print(data_file)
-                    file_uploader_api=base_url+file_upload_api
-                    file_upload_submit = requests.post(file_uploader_api,files=data_file,)
-                    print(file_upload_submit.status_code)                    
-                    file_upload_response=json.loads(file_upload_submit.text)
-                    print(file_upload_response)
-                    print(file_upload_submit.status_code)
-                    photo_file_path=file_upload_response['common_file']
-                    if file_upload_response['common_file']:
-                        flash(f"{photoFileName} uploaded","success")
-                        # delete the photo file from the temporary directory
-                        # os.remove(os.path.join(str(BASE_DIR) +'/' + 'temp', photoFileName))
-                    else:
-                        flash("Profile photo is unable to upload","error")
+                    with open(str(BASE_DIR) + '/' + 'temp/'+ photoFileName, 'rb') as f:
+                        # data_file = {
+                        #     "common_file":(photoFileName, 'rb')
+                        # }
+                        data_file = {
+                            "common_file":(photoFileName, f)
+                        }
+                        print(data_file)
+                        file_uploader_api=base_url+file_upload_api
+                        file_upload_submit = requests.post(file_uploader_api,files=data_file,)
+                        print(file_upload_submit.status_code)                    
+                        file_upload_response=json.loads(file_upload_submit.text)
+                        print(file_upload_response)
+                        print(file_upload_submit.status_code)
+                        photo_file_path=file_upload_response['common_file']
+                        if file_upload_response['common_file']:
+                            flash(f"{photoFileName} uploaded","success")
+                            # delete the photo file from the temporary directory
+                            # os.remove(os.path.join(str(BASE_DIR) +'/' + 'temp', photoFileName))
+                        else:
+                            flash("Profile photo is unable to upload","error")
+                else:
+                    photoFileName = ""
+                    photo_file_size = ""
+                    photo_file_path = ""
 
                 # """" SIGNATURE FILE UPLOAD """"
                 signature_file = request.files["signature_file"]
@@ -1025,7 +1032,6 @@ def add_doctor():
                 else:
                     flash("something error","error")
                     return redirect(url_for('add_doctor'))
-                return redirect(url_for('add_doctor'))
         return render_template("add_doctor_form.html",languages=languages,specializations=specializations,locations=locations)
     except Exception as e:
         print(e)
