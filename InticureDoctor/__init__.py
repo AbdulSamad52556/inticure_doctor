@@ -1933,6 +1933,7 @@ def action_doctor(actions,appointment_id):
 @app.route("/dashboard/order_detail/<int:id>",methods=['GET','POST'])
 def order_detail(id):
     id=id
+    print(session)
     appointment_detail_api="api/doctor/appointment_detail"
     observations_api="api/doctor/observations"
     reschedule_api="api/doctor/appointment_schedule"
@@ -2441,7 +2442,8 @@ def order_detail(id):
                     # print("create follow up")
                     appointment_date=request.form['follow_up_date']
                     appointment_time=request.form['follow_up_time']
-                    # print(appointment_time)
+                    print(appointment_time)
+                    print(appointment_date)
                     remarks=request.form['remarks']
                     # remarks=""
                     # for another speciality doctor
